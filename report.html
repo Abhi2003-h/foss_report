@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOSS Fest 2023 - Interactive Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <!-- 
+        Chosen Palette: Calm Harmony (Stone, Gray, Teal)
+        Application Structure Plan: A single-page, vertically scrolling dashboard. The structure begins with a high-level summary (key metrics), then allows users to explore deeper through dedicated sections for event highlights, participant analysis, and financial breakdowns. This non-linear, thematic structure is more engaging than the original report's format and allows users to quickly access the information most relevant to them. Navigation is facilitated by a sticky header, enabling easy jumps between sections. A new section for the 2025 vision has been added to showcase future plans.
+        Visualization & Content Choices: 
+        - Report Info: Key stats (attendees, colleges). Goal: Inform. Viz: Large stat cards. Interaction: Subtle hover animation. Justification: Provides immediate, high-impact takeaways.
+        - Report Info: Participant breakdown (CEK vs. Outside). Goal: Compare. Viz: Donut Chart (Chart.js). Interaction: Tooltips on hover. Justification: Visually shows the balanced representation.
+        - Report Info: Income/Expense. Goal: Compare. Viz: Donut/Bar Charts (Chart.js). Interaction: Tooltips. Justification: Clearly illustrates financial data.
+        - Report Info: Event Plans for 2025. Goal: Organize/Inform. Viz: Interactive cards. Interaction: Hover effects. Justification: Presents the schedule in a visually engaging format.
+        - Report Info: 2025 Budget. Goal: Compare. Viz: Bar Chart. Justification: Clearly shows proposed allocation of funds.
+        - Report Info: Team Members. Goal: Organize. Viz: Tabbed interface with cards. Interaction: Clickable tabs. Justification: Clearly separates past and present teams for better context.
+        CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .tab-button.active {
+            background-color: #0d9488; /* teal-600 */
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-stone-100 text-gray-800">
+
+    <!-- Header & Navigation -->
+    <header id="header" class="bg-stone-100/80 backdrop-blur-lg sticky top-0 z-50 border-b border-stone-200">
+        <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold text-teal-600">FOSS Fest</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#report2023" class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium">Report 2023</a>
+                        <a href="#vision2025" class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium">Vision 2025</a>
+                        <a href="#team" class="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium">The Team</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+        <!-- Hero Section -->
+        <section class="text-center mb-20">
+            <h2 class="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
+                FOSS Fest: Past & Future
+            </h2>
+            <p class="mt-6 max-w-2xl mx-auto text-lg text-gray-600">
+                An interactive report on the success of FOSS Fest 2023 and our ambitious vision for an even bigger event in 2025.
+            </p>
+        </section>
+
+        <!-- Report 2023 Section -->
+        <section id="report2023" class="mb-20">
+            <div class="text-center mb-16">
+                <h3 class="text-3xl font-bold">Retrospective: FOSS Fest 2023</h3>
+                <p class="text-gray-600 mt-2">A look back at our successful inaugural event.</p>
+            </div>
+
+            <!-- Overview Section -->
+            <div id="overview" class="mb-20">
+                <h4 class="text-2xl font-bold text-center mb-4">Event at a Glance</h4>
+                <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">FOSS Fest 2023 successfully brought together students, professionals, and enthusiasts to promote the awareness and adoption of FOSS technologies.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                    <div class="bg-white p-6 rounded-xl shadow-md transition-transform hover:scale-105">
+                        <h5 class="font-bold text-lg text-teal-600">Objectives Met</h5>
+                        <p class="text-gray-600 mt-2">Promoted FOSS benefits, encouraged collaboration, and inspired community contributions.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md transition-transform hover:scale-105">
+                        <h5 class="font-bold text-lg text-teal-600">Knowledge & Skills</h5>
+                        <p class="text-gray-600 mt-2">Attendees gained in-depth knowledge and enhanced practical skills through hands-on workshops on topics like AI/ML.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md transition-transform hover:scale-105">
+                        <h5 class="font-bold text-lg text-teal-600">Community Engagement</h5>
+                        <p class="text-gray-600 mt-2">Strengthened the FOSS community by connecting diverse groups and fostering new collaborations.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Participants Section -->
+            <div id="participants" class="mb-20">
+                <h4 class="text-2xl font-bold text-center mb-4">Participant Analysis</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="grid grid-cols-2 gap-6 text-center">
+                        <div class="bg-white p-6 rounded-xl shadow-md">
+                            <p class="text-4xl font-extrabold text-teal-600">65</p>
+                            <p class="text-gray-600 font-medium">Total Registrations</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-md">
+                            <p class="text-4xl font-extrabold text-teal-600">62</p>
+                            <p class="text-gray-600 font-medium">Total Attended</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h5 class="text-center font-bold text-lg mb-4">Attendee Breakdown</h5>
+                        <div class="chart-container">
+                            <canvas id="attendeeChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Financials Section -->
+            <div id="financials" class="mb-20">
+                <h4 class="text-2xl font-bold text-center mb-4">Financial Story</h4>
+                <div class="bg-white p-6 sm:p-8 rounded-xl shadow-md">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h5 class="text-center font-bold text-lg mb-4">Income Sources</h5>
+                            <div class="chart-container">
+                                <canvas id="incomeChart"></canvas>
+                            </div>
+                            <p class="text-center mt-4 text-sm text-gray-500">Total Income: <span class="font-bold">₹18,212</span></p>
+                        </div>
+                        <div>
+                            <h5 class="text-center font-bold text-lg mb-4">Top Expenses</h5>
+                            <div class="chart-container" style="max-width: 100%; height: 350px;">
+                                <canvas id="expenseChart"></canvas>
+                            </div>
+                             <p class="text-center mt-4 text-sm text-gray-500">Total Expense: <span class="font-bold">₹18,081</span> | Profit: <span class="font-bold text-green-600">₹131</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Vision 2025 Section -->
+        <section id="vision2025" class="mb-20">
+            <div class="text-center mb-16">
+                <h3 class="text-3xl font-bold">The Vision for FOSS Fest 2025</h3>
+                <p class="text-gray-600 mt-2">Building on our success, we're planning a 2-day event with a hackathon.</p>
+            </div>
+            
+            <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg">
+                <h4 class="text-2xl font-bold text-center mb-12">Proposed Event Plan</h4>
+                
+                <div class="mb-12">
+                    <h5 class="font-bold text-xl text-center text-teal-600 mb-6">Day 1: Talks, Workshops & Hackathon Kick-off</h5>
+                    <div id="day1-events" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 text-center">
+                    </div>
+                </div>
+
+                <div>
+                    <h5 class="font-bold text-xl text-center text-teal-600 mb-6">Day 2: Overnight Hacking & Finale</h5>
+                    <div id="day2-events" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg mt-12">
+                <h4 class="text-2xl font-bold text-center mb-4">Estimated Budget for 2025</h4>
+                <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">To bring this vision to life, we need community and corporate support. Here's our projected budget.</p>
+                <div class="chart-container" style="max-width: 100%; height: 400px;">
+                    <canvas id="budget2025Chart"></canvas>
+                </div>
+                <p class="text-center mt-4 text-lg text-gray-500">Estimated Total: <span class="font-bold text-teal-600">₹58,000</span></p>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section id="team" class="mb-12">
+            <h3 class="text-3xl font-bold text-center mb-4">The Organizing Teams</h3>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">This event is made possible by the passion and dedication of our student organizers, volunteers, and faculty coordinators.</p>
+            
+            <div class="w-full max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-2">
+                <div class="flex justify-center border-b border-gray-200">
+                    <button data-tab="team2023" class="tab-button active px-6 py-2 font-medium text-gray-600 rounded-t-lg">2023 Team</button>
+                    <button data-tab="team2025" class="tab-button px-6 py-2 font-medium text-gray-600 rounded-t-lg">2025 Team</button>
+                </div>
+                <div id="team2023" class="tab-content p-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 text-center">
+                </div>
+                <div id="team2025" class="tab-content p-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 text-center" style="display: none;">
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-gray-800 text-white">
+        <div class="max-w-6xl mx-auto py-4 px-4 sm:px-6 lg:px-8 text-center text-sm">
+            <p>FOSS Fest Interactive Report | College of Engineering Karunagappally</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DATA ---
+            const attendeeData = {
+                labels: ['From CEK', 'From Outside Colleges'],
+                data: [32, 30]
+            };
+
+            const incomeData = {
+                labels: ['FOSS UNITED', 'Ticket Sales', 'Bytsolv'],
+                data: [10000, 5712, 2500]
+            };
+
+            const expenseData = {
+                labels: ['Pizza', 'TA for Speakers', 'Refreshments', 'Stickers & ID cards', 'Speakers & Mics', 'Fuel', 'Miscellaneous'],
+                data: [5118, 4000, 3850, 1430, 1260, 1130, 973]
+            };
+            
+            const team2023Data = [
+                { name: "Abhiram N J", role: "Lead Organizer" },
+                { name: "Anand S", role: "Lead Organizer" },
+                { name: "Shifali A", role: "Event Coordinator" },
+                { name: "Sabeena K", role: "Staff Coordinator" },
+                { name: "Abhimanyu RB", role: "Tech Team" },
+                { name: "Adithya Vijayakumar", role: "Media Team" },
+                { name: "Amtul Rauf NA", role: "Volunteer" },
+                { name: "Johan George", role: "Volunteer" },
+                { name: "Aparna R Krishna", role: "Volunteer" },
+                { name: "Ganesh S", role: "Volunteer" }
+            ];
+            
+            const team2025Data = [
+                { name: "Mahitha D", role: "Lead" },
+                { name: "Johan George", role: "Co-Lead" },
+                { name: "Abla Hussain", role: "Design Lead" },
+                { name: "Abhirami J", role: "Socials & Content" },
+                { name: "Abhijith B", role: "Finance" },
+                { name: "Ananya S Anil", role: "Reporting" },
+                { name: "Jyotsna D Pramod", role: "Event & Ops" },
+                { name: "Aaron M Sabu", role: "Event & Ops" },
+                { name: "Chinthak Divan K", role: "Out-Reach" },
+                { name: "Abhimanyu R B", role: "Mentor" },
+                { name: "Abhiram NJ", role: "Mentor" },
+                { name: "Anand S", role: "Mentor" },
+                { name: "Abhijith H", role: "Mentor" },
+                { name: "Renjith", role: "Staff" }
+            ];
+
+            const day1Events = [
+                { name: 'Registration & Networking', icon: '📝' },
+                { name: 'Inauguration', icon: '🎉' },
+                { name: 'Talk Sessions', icon: '🎤' },
+                { name: 'Mini-Games', icon: '🎲' },
+                { name: 'Lunch Break', icon: '🍕' },
+                { name: 'Technical Workshops', icon: '🛠️' },
+                { name: 'Musical Session', icon: '🎵' },
+                { name: 'Hackathon Kick-off', icon: '🚀' }
+            ];
+
+            const day2Events = [
+                { name: 'Overnight Hacking', icon: '💻' },
+                { name: 'Dinner', icon: '🍔' },
+                { name: 'Judging', icon: '⚖️' },
+                { name: 'Wrap-up & Photos', icon: '📸' }
+            ];
+
+            const budget2025Data = {
+                labels: ['Food & Beverages','TA for Speakers','Venue & Equipment','Workshop Materials','Design & Printing','Swags & Stickers','Miscellaneous'],
+                data: [20000, 12000, 8000, 7000, 5000, 3000, 3000]
+            };
+
+            // --- CHART COLORS ---
+            const chartColors = {
+                teal: 'rgba(13, 148, 136, 0.8)',
+                tealLight: 'rgba(13, 148, 136, 0.5)',
+                cyan: 'rgba(8, 145, 178, 0.8)',
+                cyanLight: 'rgba(8, 145, 178, 0.5)',
+                stone: 'rgba(120, 113, 108, 0.8)',
+                stoneLight: 'rgba(120, 113, 108, 0.5)'
+            };
+            
+            // --- RENDER FUNCTIONS ---
+            const renderTeam = (containerId, teamData) => {
+                const container = document.getElementById(containerId);
+                container.innerHTML = ''; // Clear previous content
+                teamData.forEach(member => {
+                    const memberEl = document.createElement('div');
+                    memberEl.className = "bg-stone-50 p-4 rounded-lg shadow-sm";
+                    memberEl.innerHTML = `
+                        <p class="font-bold text-gray-900">${member.name}</p>
+                        <p class="text-sm text-teal-600">${member.role}</p>
+                    `;
+                    container.appendChild(memberEl);
+                });
+            };
+            
+            const renderEventCards = (containerId, events) => {
+                const container = document.getElementById(containerId);
+                events.forEach(event => {
+                    const card = document.createElement('div');
+                    card.className = "p-4 border rounded-lg transition-transform hover:scale-105 hover:shadow-md";
+                    card.innerHTML = `
+                        <p class="text-3xl">${event.icon}</p>
+                        <p class="mt-2 font-semibold text-gray-700">${event.name}</p>
+                    `;
+                    container.appendChild(card);
+                });
+            };
+
+            // --- CHART.JS IMPLEMENTATION ---
+            const createDonutChart = (ctx, labels, data, colors) => {
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Amount',
+                            data: data,
+                            backgroundColor: colors,
+                            borderColor: '#F5F5F4',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'bottom' },
+                            tooltip: {
+                                callbacks: {
+                                    label: (context) => `${context.label}: ${new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0 }).format(context.parsed)}`
+                                }
+                            }
+                        }
+                    }
+                });
+            };
+            
+            const createBarChart = (ctx, labels, data, chartLabel, color) => {
+                 new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: chartLabel,
+                            data: data,
+                            backgroundColor: color,
+                            borderColor: color.replace('0.5', '1'),
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                             tooltip: {
+                                callbacks: {
+                                    label: (context) => `${context.dataset.label}: ${new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0 }).format(context.parsed.x)}`
+                                }
+                            }
+                        },
+                        scales: {
+                            x: { beginAtZero: true, grid: { display: false } },
+                            y: { grid: { display: false } }
+                        }
+                    }
+                });
+            };
+
+            // --- TAB LOGIC ---
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.dataset.tab;
+                    
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    tabContents.forEach(content => {
+                        if (content.id === tabId) {
+                            content.style.display = 'grid';
+                        } else {
+                            content.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // --- INITIALIZE ---
+            renderEventCards('day1-events', day1Events);
+            renderEventCards('day2-events', day2Events);
+            renderTeam('team2023', team2023Data);
+            renderTeam('team2025', team2025Data);
+
+            const attendeeCtx = document.getElementById('attendeeChart')?.getContext('2d');
+            if (attendeeCtx) createDonutChart(attendeeCtx, attendeeData.labels, attendeeData.data, [chartColors.teal, chartColors.cyan]);
+
+            const incomeCtx = document.getElementById('incomeChart')?.getContext('2d');
+            if (incomeCtx) createDonutChart(incomeCtx, incomeData.labels, incomeData.data, [chartColors.teal, chartColors.cyan, chartColors.stone]);
+            
+            const expenseCtx = document.getElementById('expenseChart')?.getContext('2d');
+            if(expenseCtx) createBarChart(expenseCtx, expenseData.labels, expenseData.data, 'Expense', chartColors.tealLight);
+
+            const budget2025Ctx = document.getElementById('budget2025Chart')?.getContext('2d');
+            if(budget2025Ctx) createBarChart(budget2025Ctx, budget2025Data.labels, budget2025Data.data, 'Estimated Cost', chartColors.cyanLight);
+        });
+    </script>
+</body>
+</html>
